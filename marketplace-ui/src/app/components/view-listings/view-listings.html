@@ -1,0 +1,24 @@
+<div class="container mt-5">
+  <h2 class="fw-bold mb-4">Browse Listings</h2>
+  <div class="row g-4">
+    <div class="col-md-6 col-lg-4" *ngFor="let listing of listings">
+      <div class="card shadow-sm h-100" [routerLink]="['/listing', listing.id]" style="cursor: pointer;">
+        <div class="card-body">
+          <h5 class="card-title fw-bold">{{ listing.title }}</h5>
+          <h6 class="text-success fw-bold fs-5">\${{ listing.price }}</h6>
+          <p class="card-text text-muted">{{ listing.description }}</p>
+          <p class="card-text">
+            <small class="text-muted">📍 {{ listing.location }}</small>
+          </p>
+          <p class="card-text">
+            <span class="badge bg-secondary me-1">{{ listing.condition }}</span>
+            <span class="badge bg-primary me-1" *ngFor="let cat of listing.categories">{{ cat }}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 text-center text-muted mt-4" *ngIf="listings.length === 0">
+      <p>No listings yet. <a routerLink="/add">Post the first one!</a></p>
+    </div>
+  </div>
+</div>
