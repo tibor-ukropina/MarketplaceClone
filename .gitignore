@@ -1,0 +1,23 @@
+# Spring Boot
+marketplace-api/target/
+marketplace-api/.mvn/
+marketplace-api/*.jar
+marketplace-api/.env
+
+# Angular
+marketplace-ui/node_modules/
+marketplace-ui/dist/
+marketplace-ui/.angular/
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# OS
+.DS_Store
+Thumbs.db
