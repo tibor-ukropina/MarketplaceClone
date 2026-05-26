@@ -27,4 +27,9 @@ public class ListingController {
         return service.getListingById(id);
 
     }
+
+    @GetMapping("/api/listings")
+    public List<Listing> browseListings() {
+        return service.viewListings();
+    }
 }
