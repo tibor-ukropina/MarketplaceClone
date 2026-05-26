@@ -1,4 +1,6 @@
 {
+  "buildCommand": "ng build",
+  "outputDirectory": "dist/marketplace-ui/browser",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
