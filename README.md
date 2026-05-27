@@ -1,6 +1,6 @@
 # Marketplace Clone
 
-### Live Demo: [marketplace-clone-git-main-tiborukropinas-projects.vercel.app](https://marketplace-clone-git-main-tiborukropinas-projects.vercel.app/)
+### Live Demo: [marketplace-clone-lovat.vercel.app](https://marketplace-clone-lovat.vercel.app/)
 
 A full-stack Facebook Marketplace clone where users can browse and post item listings. Built with a Spring Boot REST API backend and an Angular single-page application frontend, deployed across Railway and Vercel.
 
