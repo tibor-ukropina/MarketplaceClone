@@ -23,4 +23,8 @@ export class ListingService {
   addListing(listing: Listing): Observable<Listing> {
     return this.http.post<Listing>(this.apiUrl, listing);
   }
+
+  searchListings(keyword: string): Observable<Listing[]> {
+    return this.http.get<Listing[]>(`${this.apiUrl}/search/${keyword}`);
+  }
 }

@@ -11,6 +11,7 @@ import { Listing } from '../../models/listing.model';
   styleUrl: './add-listing.scss',
 })
 export class AddListing {
+  
   listing: Listing = {
     id: 0,
     title: '',

@@ -1,5 +1,20 @@
 <div class="container mt-5">
   <h2 class="fw-bold mb-4">Browse Listings</h2>
+
+  <div class="input-group mb-4">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Search by title or description..."
+      [(ngModel)]="searchKeyword"
+      (keyup.enter)="onSearch()"
+    />
+    <button class="btn btn-primary" (click)="onSearch()">Search</button>
+    @if (searchKeyword) {
+      <button class="btn btn-outline-secondary" (click)="onClear()">Clear</button>
+    }
+  </div>
+
   <div class="row g-4">
     @for (listing of listings(); track listing.id) {
       <div class="col-md-6 col-lg-4">
@@ -22,7 +37,7 @@
       </div>
     } @empty {
       <div class="col-12 text-center text-muted mt-4">
-        <p>No listings yet. <a routerLink="/add">Post the first one!</a></p>
+        <p>No listings found.</p>
       </div>
     }
   </div>
