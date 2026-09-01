@@ -7,10 +7,65 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
         <li class="nav-item"><a class="nav-link" routerLink="/">Home</a></li>
         <li class="nav-item"><a class="nav-link" routerLink="/listings">Browse</a></li>
         <li class="nav-item"><a class="nav-link" routerLink="/add">Post a Listing</a></li>
+        <li class="nav-item position-relative ms-lg-2">
+          <button class="btn btn-light btn-sm position-relative" (click)="toggleCart()">
+            🛒 Cart
+            @if (cart.count() > 0) {
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {{ cart.count() }}
+              </span>
+            }
+          </button>
+
+          @if (cart.cartOpen()) {
+            <div class="dropdown-menu dropdown-menu-end show d-block mt-2 p-3 shadow"
+                 style="width: 340px; right: 0; left: auto;">
+              <h6 class="fw-bold mb-3">Your Cart</h6>
+
+              @for (item of cart.items(); track item.listing.id) {
+                <div class="d-flex align-items-center gap-2 mb-3">
+                  @if (item.listing.imageData) {
+                    <img [src]="'data:' + item.listing.imageType + ';base64,' + item.listing.imageData"
+                         class="rounded" style="width: 48px; height: 48px; object-fit: cover;"
+                         [alt]="item.listing.title" />
+                  } @else {
+                    <div class="bg-light rounded d-flex align-items-center justify-content-center"
+                         style="width: 48px; height: 48px; font-size: 0.7rem;">
+                      <span class="text-muted">No img</span>
+                    </div>
+                  }
+                  <div class="flex-grow-1">
+                    <div class="fw-semibold small text-truncate" style="max-width: 130px;">{{ item.listing.title }}</div>
+                    <div class="text-success small">${{ item.listing.price * item.quantity }}</div>
+                  </div>
+                  <div class="d-flex align-items-center gap-1">
+                    <button class="btn btn-sm btn-outline-secondary py-0 px-2" (click)="cart.decrement(item.listing.id)">−</button>
+                    <span class="small px-1">{{ item.quantity }}</span>
+                    <button class="btn btn-sm btn-outline-secondary py-0 px-2"
+                            [disabled]="item.listing.quantity != null && item.quantity >= item.listing.quantity"
+                            (click)="cart.increment(item.listing.id)">+</button>
+                  </div>
+                  <button class="btn btn-sm btn-link text-danger p-0 ms-1" (click)="cart.removeFromCart(item.listing.id)">✕</button>
+                </div>
+              } @empty {
+                <p class="text-muted small mb-3">Your cart is empty.</p>
+              }
+
+              @if (cart.items().length > 0) {
+                <hr class="my-2" />
+                <div class="d-flex justify-content-between fw-bold mb-3">
+                  <span>Total</span>
+                  <span class="text-success">${{ cart.total() }}</span>
+                </div>
+                <button class="btn btn-primary w-100" (click)="cart.openCheckout()">Checkout</button>
+              }
+            </div>
+          }
+        </li>
       </ul>
     </div>
   </div>

@@ -7,9 +7,8 @@
       class="form-control"
       placeholder="Search by title or description..."
       [(ngModel)]="searchKeyword"
-      (keyup.enter)="onSearch()"
+      (ngModelChange)="onSearch()"
     />
-    <button class="btn btn-primary" (click)="onSearch()">Search</button>
     @if (searchKeyword) {
       <button class="btn btn-outline-secondary" (click)="onClear()">Clear</button>
     }
@@ -18,20 +17,60 @@
   <div class="row g-4">
     @for (listing of listings(); track listing.id) {
       <div class="col-md-6 col-lg-4">
-        <div class="card shadow-sm h-100" [routerLink]="['/listing', listing.id]" style="cursor: pointer;">
-          <div class="card-body">
+        <div class="card shadow-sm h-100">
+          @if (listing.imageData) {
+            <img
+              [src]="'data:' + listing.imageType + ';base64,' + listing.imageData"
+              class="card-img-top"
+              style="height: 200px; object-fit: cover;"
+              [alt]="listing.title"
+            />
+          } @else {
+            <div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+              <span class="text-muted">No image</span>
+            </div>
+          }
+          <div class="card-body" [routerLink]="['/listing', listing.id]" style="cursor: pointer;">
             <h5 class="card-title fw-bold">{{ listing.title }}</h5>
             <h6 class="text-success fw-bold fs-5">${{ listing.price }}</h6>
             <p class="card-text text-muted">{{ listing.description }}</p>
             <p class="card-text">
               <small class="text-muted">📍 {{ listing.location }}</small>
             </p>
+            @if (listing.quantity != null) {
+              <p class="card-text">
+                <small class="text-muted">Quantity: {{ listing.quantity }}</small>
+              </p>
+            }
             <p class="card-text">
               <span class="badge bg-secondary me-1">{{ listing.condition }}</span>
               @for (cat of listing.categories; track cat) {
                 <span class="badge bg-primary me-1">{{ cat }}</span>
               }
             </p>
+          </div>
+          <div class="card-footer d-flex gap-2 align-items-center">
+            @if (!isMaxed(listing)) {
+              <div class="btn-group btn-group-sm" role="group">
+                <button class="btn btn-outline-secondary" (click)="decreaseAmount(listing)"
+                        [disabled]="getAmount(listing) <= 1">−</button>
+                <span class="btn btn-outline-secondary pe-none">{{ getAmount(listing) }}</span>
+                <button class="btn btn-outline-secondary" (click)="increaseAmount(listing)"
+                        [disabled]="remaining(listing) != null && getAmount(listing) >= remaining(listing)!">+</button>
+              </div>
+            }
+            <button class="btn btn-sm btn-success" (click)="onAddToCart(listing)"
+                    [disabled]="isMaxed(listing)">
+              @if (listing.quantity === 0) {
+                Sold Out
+              } @else if (isMaxed(listing)) {
+                Max in Cart
+              } @else {
+                Add to Cart
+              }
+            </button>
+            <a [routerLink]="['/edit', listing.id]" class="btn btn-sm btn-outline-primary ms-auto">Edit</a>
+            <button class="btn btn-sm btn-outline-danger" (click)="onDelete(listing)">Delete</button>
           </div>
         </div>
       </div>

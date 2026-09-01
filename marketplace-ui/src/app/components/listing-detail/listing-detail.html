@@ -9,6 +9,9 @@
           </div>
           <div class="card-body">
             <p><strong>Price:</strong> ${{ listing.price }}</p>
+            @if (listing.quantity != null) {
+              <p><strong>Quantity:</strong> {{ listing.quantity }}</p>
+            }
             <p><strong>Description:</strong> {{ listing.description }}</p>
             <p><strong>Condition:</strong> {{ listing.condition }}</p>
             <p><strong>Location:</strong> {{ listing.location }}</p>
@@ -21,6 +24,26 @@
           </div>
           <div class="card-footer d-flex justify-content-between">
             <a routerLink="/listings" class="btn btn-outline-primary">Browse All Listings</a>
+            <div class="d-flex gap-2 align-items-center">
+              @if (!isMaxed()) {
+                <div class="btn-group" role="group">
+                  <button class="btn btn-outline-secondary" (click)="decreaseAmount()"
+                          [disabled]="addAmount <= 1">−</button>
+                  <span class="btn btn-outline-secondary pe-none">{{ addAmount }}</span>
+                  <button class="btn btn-outline-secondary" (click)="increaseAmount()"
+                          [disabled]="remaining() != null && addAmount >= remaining()!">+</button>
+                </div>
+              }
+              <button class="btn btn-success" (click)="onAddToCart()" [disabled]="isMaxed()">
+                @if (listing.quantity === 0) {
+                  Sold Out
+                } @else if (isMaxed()) {
+                  Max in Cart
+                } @else {
+                  Add to Cart
+                }
+              </button>
+            </div>
             <a routerLink="/add" class="btn btn-primary">Post Another</a>
           </div>
         </div>

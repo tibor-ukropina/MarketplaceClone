@@ -11,7 +11,7 @@ import { Listing } from '../../models/listing.model';
   styleUrl: './add-listing.scss',
 })
 export class AddListing {
-  
+
   listing: Listing = {
     id: 0,
     title: '',
@@ -19,14 +19,36 @@ export class AddListing {
     price: 0,
     categories: [],
     condition: '',
-    location: ''
+    location: '',
+    quantity: 1
   };
+
+  selectedImage: File | null = null;
+  imagePreview: string | null = null;
 
   constructor(private listingService: ListingService, private router: Router) {}
 
+  onImageSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      this.selectedImage = input.files[0];
+      const reader = new FileReader();
+      reader.onload = () => this.imagePreview = reader.result as string;
+      reader.readAsDataURL(this.selectedImage);
+    }
+  }
+
   onSubmit() {
-    this.listingService.addListing(this.listing).subscribe(saved => {
-      this.router.navigate(['/listing', saved.id]);
-    });
+    if (this.selectedImage) {
+      this.listingService.addListingWithImage(this.listing, this.selectedImage).subscribe({
+        next: saved => this.router.navigate(['/listing', saved.id]),
+        error: err => console.error('Error posting listing:', err)
+      });
+    } else {
+      this.listingService.addListing(this.listing).subscribe({
+        next: saved => this.router.navigate(['/listing', saved.id]),
+        error: err => console.error('Error posting listing:', err)
+      });
+    }
   }
 }

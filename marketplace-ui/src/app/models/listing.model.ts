@@ -6,4 +6,8 @@ export interface Listing {
   categories: string[];
   condition: string;
   location: string;
+  quantity?: number;
+  imageName?: string;
+  imageType?: string;
+  imageData?: string;
 }
