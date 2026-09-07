@@ -12,7 +12,9 @@ jobs:
         with:
           node-version: 24
       - name: Install dependencies
+        working-directory: marketplace-ui
         run: npm ci
       - name: Run tests
+        working-directory: marketplace-ui
         run: ng test
 
