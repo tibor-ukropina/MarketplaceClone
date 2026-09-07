@@ -16,5 +16,5 @@ jobs:
         run: npm ci
       - name: Run tests
         working-directory: marketplace-ui
-        run: ng test
+        run: npm test
 
